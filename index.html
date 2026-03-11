@@ -23,7 +23,6 @@
 
         .glass { background: var(--card); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; padding: 25px; margin-bottom: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
         
-        /* NAME INPUT STYLE */
         .name-input { width: 100%; padding: 12px; margin: 15px 0; border-radius: 8px; border: 1px solid var(--dev-blue); background: rgba(0,0,0,0.5); color: #fff; box-sizing: border-box; outline: none; }
 
         #nav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(38px, 1fr)); gap: 6px; margin-bottom: 20px; max-height: 160px; overflow-y: auto; padding: 10px; background: rgba(0,0,0,0.5); border-radius: 12px; border: 1px solid #222; }
@@ -43,9 +42,7 @@
         .explanation-card { margin-top: 15px; padding: 15px; border-radius: 10px; background: #000; border: 1px dashed var(--dev-blue); font-size: 0.9em; }
         .step { color: var(--dev-blue); font-weight: bold; margin-right: 5px; }
         
-        /* WHATSAPP BUTTON STYLE */
         .wa-btn { position: fixed; bottom: 20px; right: 20px; background: var(--wa-green); color: white; padding: 12px 20px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 0.9em; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); z-index: 1000; transition: 0.3s; }
-        .wa-btn:hover { transform: scale(1.05); background: #1eb954; }
 
         footer { text-align: center; color: #555; font-size: 0.75em; margin: 30px 0; border-top: 1px solid #222; padding-top: 15px; }
         .hidden { display: none; }
@@ -63,7 +60,6 @@
     <h1>KELVIN THE DESIGNER</h1>
     <p>CBT Engine • Full Syllabus Mastery • v5.0</p>
 </div>
-
 
     <div id="start-page" class="glass" style="text-align: center;">
         <h2 style="color:var(--dev-blue)">JAMB MATHEMATICS 200</h2>
@@ -101,58 +97,71 @@
 </div>
 
 <script>
-// YOUR NEW MATH WEB APP URL
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbypAjBMxjI7fOJshx64Qq0_r2XYPxYgatKbgPd-IGTQugF5iKdVfFd2vlC26QIurakNag/exec";
 
-// DATABASE WITH DETAILED EXPLANATIONS
+// 60 UNIQUE QUESTIONS - REMOVED REPEATING LOOP
 const masterDB = [
-    // CALCULUS
-    {q:"Find the derivative of y = (3x² + 2)⁴.", a:"24x(3x² + 2)³", ops:["24x(3x² + 2)³","8x(3x² + 2)³","12x(3x² + 2)³","None"], 
-     ex:"<span class='step'>1.</span> Apply Chain Rule: d/dx[uⁿ] = n·uⁿ⁻¹ · du/dx.<br><span class='step'>2.</span> Here u = 3x²+2, n=4, and du/dx = 6x.<br><span class='step'>3.</span> Result = 4(3x²+2)³ · 6x = 24x(3x²+2)³."},
-    
-    {q:"Evaluate the integral: ∫ (4x³ - 6x²) dx.", a:"x⁴ - 2x³ + C", ops:["x⁴ - 2x³ + C","4x⁴ - 6x³ + C","x⁴ - 3x³ + C","None"], 
-     ex:"<span class='step'>1.</span> Integrate term by term using ∫xⁿ = xⁿ⁺¹/(n+1).<br><span class='step'>2.</span> ∫4x³ = 4x⁴/4 = x⁴.<br><span class='step'>3.</span> ∫6x² = 6x³/3 = 2x³.<br><span class='step'>4.</span> Combine: x⁴ - 2x³ + C."},
-
-    // MATRICES
-    {q:"Find the determinant of the matrix [[4, 3], [1, 2]].", a:"5", ops:["5","11","8","2"], 
-     ex:"<span class='step'>1.</span> For a 2x2 matrix [[a,b],[c,d]], Det = (ad - bc).<br><span class='step'>2.</span> (4 × 2) - (3 × 1) = 8 - 3 = 5."},
-
-    // TRIGONOMETRY
-    {q:"If sin θ = 5/13 and θ is obtuse (90 < θ < 180), find cos θ.", a:"-12/13", ops:["12/13","-12/13","5/12","-5/12"], 
-     ex:"<span class='step'>1.</span> Use Pythagoras: adj² = hyp² - opp² = 13² - 5² = 144.<br><span class='step'>2.</span> adj = 12. Since θ is in the 2nd quadrant, cos is NEGATIVE.<br><span class='step'>3.</span> cos θ = -12/13."},
-
-    // COORDINATE GEOMETRY
-    {q:"Find the slope of a line perpendicular to 2y + 5x = 10.", a:"2/5", ops:["-5/2","2/5","5/2","-2/5"], 
-     ex:"<span class='step'>1.</span> Rearrange to y = mx + c: 2y = -5x + 10 => y = -2.5x + 5.<br><span class='step'>2.</span> Original slope (m1) = -5/2.<br><span class='step'>3.</span> Perpendicular slope (m2) = -1/m1 = 2/5."},
-
-    // STATISTICS
-    {q:"Find the variance of the set: 2, 4, 6, 8, 10.", a:"8", ops:["2","4","8","10"], 
-     ex:"<span class='step'>1.</span> Mean = 30/5 = 6.<br><span class='step'>2.</span> Square of differences: (2-6)²=16, (4-6)²=4, (6-6)²=0, (8-6)²=4, (10-6)²=16.<br><span class='step'>3.</span> Sum = 40. Variance = 40/5 = 8."},
-
-    // LOGARITHMS
-    {q:"Solve for x: log₂(x + 2) + log₂(x - 2) = 5.", a:"6", ops:["4","6","8","32"], 
-     ex:"<span class='step'>1.</span> Apply Log Rule (log A + log B = log AB): log₂(x² - 4) = 5.<br><span class='step'>2.</span> Convert to index form: x² - 4 = 2⁵ = 32.<br><span class='step'>3.</span> x² = 36, therefore x = 6."}
+    {q:"Solve for x: 3x - 7 = 14", a:"7", ops:["5","7","9","21"], ex:"Add 7 to both sides, then divide by 3."},
+    {q:"Find log₁₀ 1000.", a:"3", ops:["2","3","10","100"], ex:"10 to the power of 3 equals 1000."},
+    {q:"Differentiate y = 4x³.", a:"12x²", ops:["12x²","4x²","12x","7x²"], ex:"Power rule: 3 times 4, then subtract 1 from the power."},
+    {q:"Sum of interior angles of a hexagon?", a:"720°", ops:["360°","540°","720°","900°"], ex:"Formula: (n-2) * 180."},
+    {q:"Gradient of 2y = 6x + 4?", a:"3", ops:["2","3","6","4"], ex:"Divide by 2 to get y = 3x + 2. Slope is 3."},
+    {q:"Solve x² - 5x + 6 = 0.", a:"2, 3", ops:["1, 6","2, 3","-2, -3","0, 5"], ex:"Factorize into (x-2)(x-3)."},
+    {q:"Find sin 30°.", a:"0.5", ops:["0.5","0.866","1","0"], ex:"Standard trig value."},
+    {q:"Median of: 3, 7, 9, 4, 12, 5, 10.", a:"7", ops:["5","7","9","4"], ex:"Middle value when ordered."},
+    {q:"Evaluate 4! (4 factorial).", a:"24", ops:["12","16","24","4"], ex:"4 * 3 * 2 * 1 = 24."},
+    {q:"Surface area of a sphere with r=7 (π=22/7)?", a:"616", ops:["154","616","1078","308"], ex:"Formula: 4πr²."},
+    {q:"Find x if 2^(x+1) = 32.", a:"4", ops:["3","4","5","6"], ex:"2^5 = 32, so x+1 = 5."},
+    {q:"Probability of picking a Queen from 52 cards?", a:"1/13", ops:["1/4","1/52","1/13","4/13"], ex:"4 Queens / 52 cards = 1/13."},
+    {q:"Mode of: 2, 3, 3, 4, 5, 5, 5, 6.", a:"5", ops:["3","5","6","2"], ex:"5 occurs most often."},
+    {q:"Simplify √72 + √50.", a:"11√2", ops:["11√2","6√2","5√2","122"], ex:"6√2 + 5√2 = 11√2."},
+    {q:"Volume of cylinder r=3, h=7 (π=22/7).", a:"198", ops:["66","132","198","250"], ex:"Formula: πr²h."},
+    {q:"Find the 10th term of AP: 5, 8, 11...", a:"32", ops:["30","32","35","29"], ex:"a + (n-1)d => 5 + (9*3)."},
+    {q:"Midpoint of (2,4) and (6,8)?", a:"(4,6)", ops:["(4,6)","(8,12)","(3,5)","(2,2)"], ex:"Average of x and y values."},
+    {q:"Find derivative of cos x.", a:"-sin x", ops:["sin x","-sin x","tan x","-cos x"], ex:"Standard derivative."},
+    {q:"Integration of 2x dx?", a:"x² + C", ops:["x² + C","2x² + C","x + C","x²"], ex:"Power rule in reverse."},
+    {q:"How many sides has a decagon?", a:"10", ops:["8","10","12","20"], ex:"Deca means 10."},
+    {q:"Sum of angles on a straight line?", a:"180°", ops:["90°","180°","360°","270°"], ex:"Straight line property."},
+    {q:"Binary of 25?", a:"11001", ops:["11001","10101","11100","10011"], ex:"Divide by 2 repeatedly."},
+    {q:"Find the range of 15, 2, 8, 20, 4.", a:"18", ops:["18","20","15","5"], ex:"Max minus Min (20-2)."},
+    {q:"Find θ: 2 cos θ = 1 (acute).", a:"60°", ops:["30°","45°","60°","90°"], ex:"cos θ = 0.5."},
+    {q:"Tan 45° is?", a:"1", ops:["0","1","0.5","Infinity"], ex:"Standard trig value."},
+    {q:"√144?", a:"12", ops:["10","12","14","24"], ex:"12 * 12 = 144."},
+    {q:"Value of 5^0?", a:"1", ops:["0","5","1","undefined"], ex:"Any non-zero number to power 0 is 1."},
+    {q:"Perimeter of square with area 16?", a:"16", ops:["4","8","16","32"], ex:"Side is 4, 4 * 4 = 16."},
+    {q:"Complement of 30°?", a:"60°", ops:["60°","150°","90°","180°"], ex:"Adds up to 90."},
+    {q:"Supplement of 100°?", a:"80°", ops:["80°","260°","180°","10°"], ex:"Adds up to 180."},
+    {q:"Product of -5 and -4?", a:"20", ops:["-20","20","-9","9"], ex:"Negative times negative is positive."},
+    {q:"Coefficient of x in 3x² + 5x - 2?", a:"5", ops:["3","5","-2","0"], ex:"The number multiplying x."},
+    {q:"Standard deviation is square root of?", a:"Variance", ops:["Mean","Range","Variance","Mode"], ex:"Definition of SD."},
+    {q:"Solve for x: x/3 + 4 = 10.", a:"18", ops:["6","18","12","2"], ex:"x/3 = 6."},
+    {q:"Find simple interest: #5000, 2yrs, 5%.", a:"#500", ops:["#250","#500","#1000","#50"], ex:"(P*R*T)/100."},
+    {q:"Third term of GP is 18, fourth is 54. Ratio?", a:"3", ops:["2","3","6","9"], ex:"54 / 18 = 3."},
+    {q:"Set A={1,2,3}, B={3,4,5}. A ∩ B?", a:"{3}", ops:["{1,2,3,4,5}","{3}","{1,2}","∅"], ex:"Common elements."},
+    {q:"Hypotenuse of triangle sides 6 and 8?", a:"10", ops:["14","10","12","48"], ex:"Pythagoras: 36 + 64 = 100."},
+    {q:"Find y if y varies directly as x, y=10 when x=2. Find y when x=5.", a:"25", ops:["20","25","15","50"], ex:"k=5, y=5x."},
+    {q:"Mean of 10, 20, 30, 40?", a:"25", ops:["20","25","30","100"], ex:"Total 100 / 4."},
+    {q:"Integration of 1/x?", a:"ln x + C", ops:["x","ln x + C","-1/x²","1"], ex:"Standard integral."},
+    {q:"Value of π in degrees?", a:"180°", ops:["90°","180°","360°","270°"], ex:"Radians to degrees."},
+    {q:"Number of subsets in set of 4 elements?", a:"16", ops:["4","8","16","32"], ex:"2^n = 2^4."},
+    {q:"Gradient of horizontal line?", a:"0", ops:["1","0","Infinity","None"], ex:"No vertical change."},
+    {q:"Area of triangle base 10, height 5?", a:"25", ops:["50","25","15","10"], ex:"0.5 * 10 * 5."},
+    {q:"Derivative of constant?", a:"0", ops:["1","0","x","None"], ex:"Rate of change is zero."},
+    {q:"Roots of x² - 9 = 0?", a:"3, -3", ops:["3, 0","9, -9","3, -3","3"], ex:"x² = 9."},
+    {q:"Reciprocal of 0.25?", a:"4", ops:["2","4","0.5","0.75"], ex:"1 / 0.25."},
+    {q:"Prime numbers between 1 and 10?", a:"2, 3, 5, 7", ops:["1, 3, 5, 7","2, 3, 5, 7","2, 4, 6, 8","3, 5, 7, 9"], ex:"Only divisible by 1 and self."},
+    {q:"If 3^x = 1/9, x is?", a:"-2", ops:["2","-2","3","-3"], ex:"3^-2 = 1/9."},
+    {q:"Distance between (0,0) and (3,4)?", a:"5", ops:["7","5","25","1"], ex:"Pythagoras theorem."},
+    {q:"A circle divided in two equal parts is a?", a:"Semicircle", ops:["Quadrant","Semicircle","Sector","Segment"], ex:"Half circle."},
+    {q:"Sum 0.1 + 0.01 + 0.001?", a:"0.111", ops:["0.3","0.111","1.11","0.1"], ex:"Place value addition."},
+    {q:"Equilateral triangle has how many equal sides?", a:"3", ops:["1","2","3","0"], ex:"All sides equal."},
+    {q:"Factors of x² + x?", a:"x(x+1)", ops:["x(x)","x(x+1)","(x+1)(x+1)","x²"], ex:"Common factor x."},
+    {q:"25% of 200?", a:"50", ops:["25","40","50","100"], ex:"0.25 * 200."},
+    {q:"Solve x - 10 = -5.", a:"5", ops:["-15","15","5","-5"], ex:"-5 + 10 = 5."},
+    {q:"Log₂ 8 = ?", a:"3", ops:["2","3","4","1"], ex:"2^3 = 8."},
+    {q:"Evaluate 10 - 2 * 3.", a:"4", ops:["24","4","12","8"], ex:"BODMAS: Multiply first."},
+    {q:"Simplest form of 10/20?", a:"1/2", ops:["0.5","1/2","2/4","5/10"], ex:"Divide both by 10."}
 ];
-
-// DIVERSIFYING TOPICS TO 200
-const subjects = [
-    {t:"Mensuration", q:"Find the volume of a cone with radius 7cm and height 12cm.", a:"616cm³", ops:["616cm³","154cm³","1848cm³","None"], ex:"V = 1/3πr²h. (1/3) × (22/7) × 49 × 12 = 616."},
-    {t:"Probablity", q:"Two dice are thrown. Find the probability of getting a total of 7.", a:"1/6", ops:["1/6","1/12","5/36","1/4"], ex:"Total outcomes = 36. Pairs summing to 7: (1,6),(2,5),(3,4),(4,3),(5,2),(6,1) = 6 pairs. 6/36 = 1/6."},
-    {t:"Sequence", q:"Find the sum to infinity of 1 + 1/2 + 1/4 + 1/8...", a:"2", ops:["1.5","2","Infinity","None"], ex:"S∞ = a / (1 - r) = 1 / (1 - 0.5) = 1 / 0.5 = 2."},
-    {t:"Set Theory", q:"In a class of 50, 30 like Math, 25 like Physics. How many like both if everyone likes at least one?", a:"5", ops:["5","10","15","0"], ex:"n(AUB) = n(A) + n(B) - n(AnB). 50 = 30 + 25 - x. x = 55 - 50 = 5."},
-    {t:"Binomial", q:"Find the coefficient of x² in (1 + 2x)³.", a:"12", ops:["6","12","8","4"], ex:"Expansion: 1 + 3(2x) + 3(2x)² + (2x)³ = 1 + 6x + 12x² + 8x³. Coefficient is 12."}
-];
-
-while(masterDB.length < 200) {
-    let i = masterDB.length;
-    let s = subjects[i % subjects.length];
-    masterDB.push({
-        q: `${s.t}: ${s.q}`,
-        a: s.a,
-        ops: s.ops,
-        ex: s.ex
-    });
-}
 
 // CBT CORE
 let quiz = []; let idx = 0; let stored = {}; let time = 1800; let ticker; let studentName = "";
@@ -220,7 +229,6 @@ function finalize() {
     document.getElementById('final-score').innerText = `${score} / 60`;
     document.getElementById('review-list').innerHTML = reviewH;
 
-    // SEND TO NEW MATH GOOGLE SHEET
     fetch(WEB_APP_URL, {
         method: "POST",
         mode: "no-cors",
