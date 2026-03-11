@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BT4SQ11MEQ"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BT4SQ11MEQ"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -24,6 +23,8 @@
 
         .glass { background: var(--card); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; padding: 25px; margin-bottom: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
         
+        .name-input { width: 100%; padding: 12px; margin: 15px 0; border-radius: 8px; border: 1px solid var(--dev-blue); background: rgba(0,0,0,0.5); color: #fff; box-sizing: border-box; outline: none; }
+
         #nav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(38px, 1fr)); gap: 6px; margin-bottom: 20px; max-height: 160px; overflow-y: auto; padding: 10px; background: rgba(0,0,0,0.5); border-radius: 12px; border: 1px solid #222; }
         .nav-dot { height: 32px; background: #1a1a1a; border: 1px solid #333; display: flex; align-items: center; justify-content: center; border-radius: 6px; cursor: pointer; font-size: 0.7em; }
         .nav-dot.active { border-color: var(--dev-blue); background: rgba(0,212,255,0.2); box-shadow: 0 0 10px var(--dev-blue); }
@@ -66,6 +67,7 @@
     <div id="start-page" class="glass" style="text-align: center;">
         <h2 style="color:var(--dev-blue)">JAMB MATHEMATICS 200</h2>
         <p>Advanced coverage of Calculus, Statistics, Geometry, and Algebra.</p>
+        <input type="text" id="user-name" class="name-input" placeholder="Enter Your Full Name...">
         <div id="best-score" style="margin: 20px 0; font-weight: bold; font-size: 1.2em; color: var(--success);">Personal Best: 0/60</div>
         <button class="btn btn-main" onclick="initExam()">START RANDOM 60-QUESTION SET</button>
     </div>
@@ -88,6 +90,7 @@
         <div class="glass" style="text-align:center;">
             <h2 style="color:var(--dev-blue)">RESULTS ANALYSIS</h2>
             <h1 id="final-score" style="font-size:4.5em; margin:10px 0;">0 / 60</h1>
+            <p id="sync-status" style="font-size: 0.8em; color: #888;">Syncing results...</p>
             <button class="btn btn-main" onclick="location.reload()">TRY A NEW SET</button>
         </div>
         <div id="review-list"></div>
@@ -97,6 +100,8 @@
 </div>
 
 <script>
+const WEB_APP_URL = "YOUR_SCRIPT_URL_HERE"; // PASTE YOUR URL HERE
+
 // DATABASE WITH DETAILED EXPLANATIONS
 const masterDB = [
     // CALCULUS
@@ -127,7 +132,6 @@ const masterDB = [
      ex:"<span class='step'>1.</span> Apply Log Rule (log A + log B = log AB): log₂(x² - 4) = 5.<br><span class='step'>2.</span> Convert to index form: x² - 4 = 2⁵ = 32.<br><span class='step'>3.</span> x² = 36, therefore x = 6."}
 ];
 
-// DIVERSIFYING TOPICS TO 200 (Ensuring no repetitions and varied subjects)
 const subjects = [
     {t:"Mensuration", q:"Find the volume of a cone with radius 7cm and height 12cm.", a:"616cm³", ops:["616cm³","154cm³","1848cm³","None"], ex:"V = 1/3πr²h. (1/3) × (22/7) × 49 × 12 = 616."},
     {t:"Probablity", q:"Two dice are thrown. Find the probability of getting a total of 7.", a:"1/6", ops:["1/6","1/12","5/36","1/4"], ex:"Total outcomes = 36. Pairs summing to 7: (1,6),(2,5),(3,4),(4,3),(5,2),(6,1) = 6 pairs. 6/36 = 1/6."},
@@ -139,16 +143,10 @@ const subjects = [
 while(masterDB.length < 200) {
     let i = masterDB.length;
     let s = subjects[i % subjects.length];
-    masterDB.push({
-        q: `${s.t}: ${s.q}`,
-        a: s.a,
-        ops: s.ops,
-        ex: s.ex
-    });
+    masterDB.push({ q: `${s.t}: ${s.q}`, a: s.a, ops: s.ops, ex: s.ex });
 }
 
-// CBT CORE
-let quiz = []; let idx = 0; let stored = {}; let time = 2400; let ticker;
+let quiz = []; let idx = 0; let stored = {}; let time = 2400; let ticker; let studentName = "";
 
 function loadBest() {
     let b = localStorage.getItem('k_dev_math') || 0;
@@ -156,6 +154,8 @@ function loadBest() {
 }
 
 function initExam() {
+    studentName = document.getElementById('user-name').value;
+    if(!studentName) { alert("Designer says: Enter your name first!"); return; }
     document.getElementById('start-page').classList.add('hidden');
     document.getElementById('exam-page').classList.remove('hidden');
     quiz = masterDB.sort(() => Math.random() - 0.5).slice(0, 60);
@@ -199,17 +199,29 @@ function finalize() {
         reviewH += `<div class="glass" style="border-left: 6px solid ${win?'var(--success)':'var(--accent)'}">
             <p><b>Q${i+1}:</b> ${itm.q}</p>
             <p>Your Answer: ${u} | Correct: <b style="color:var(--success)">${itm.a}</b></p>
-            <div class="explanation-card">
-                <b>LEARNING LOGIC:</b><br>${itm.ex}
-            </div>
+            <div class="explanation-card"><b>LEARNING LOGIC:</b><br>${itm.ex}</div>
         </div>`;
     });
     let best = localStorage.getItem('k_dev_math') || 0;
     if(score > best) localStorage.setItem('k_dev_math', score);
+    
     document.getElementById('exam-page').classList.add('hidden');
     document.getElementById('result-page').classList.remove('hidden');
     document.getElementById('final-score').innerText = `${score} / 60`;
     document.getElementById('review-list').innerHTML = reviewH;
+
+    fetch(WEB_APP_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify({
+            name: studentName,
+            score: score + "/60",
+            subject: "Mathematics",
+            date: new Date().toLocaleString()
+        })
+    }).then(() => {
+        document.getElementById('sync-status').innerText = "Record synced to Google Sheets.";
+    });
 }
 </script>
 </body>
